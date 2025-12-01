@@ -16,7 +16,7 @@ public class HotelSystem extends JFrame {
     private JTextField txtDays;
     private JComboBox<String> cmbType;
 
-    // Rapor Etiketleri
+
     private JLabel lblTotalRooms;
     private JLabel lblOccupiedRooms;
     private JLabel lblTotalIncome;
@@ -51,7 +51,7 @@ public class HotelSystem extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // --- 1. ÜST PANEL (HEADER) ---
+
         JPanel pnlHeader = new JPanel();
         pnlHeader.setBackground(new Color(50, 50, 80));
         JLabel lblHeader = new JLabel("HOTEL MANAGEMENT SYSTEM");
@@ -60,7 +60,7 @@ public class HotelSystem extends JFrame {
         pnlHeader.add(lblHeader);
         add(pnlHeader, BorderLayout.NORTH);
 
-        // --- 2. SOL PANEL (GİRİŞ İŞLEMLERİ) ---
+
         JPanel pnlLeft = new JPanel();
         pnlLeft.setLayout(new GridLayout(10, 1, 5, 5));
         pnlLeft.setBorder(new TitledBorder("Operations"));
@@ -84,13 +84,13 @@ public class HotelSystem extends JFrame {
         JButton btnRefresh = new JButton("Refresh List");
 
         pnlLeft.add(btnBook);
-        pnlLeft.add(new JLabel("")); // Boşluk
+        pnlLeft.add(new JLabel(""));
         pnlLeft.add(btnCheckout);
         pnlLeft.add(btnRefresh);
 
         add(pnlLeft, BorderLayout.WEST);
 
-        // --- 3. ORTA PANEL (TABLO) ---
+
         String[] columns = {"Room No", "Type", "Status", "Customer", "Days", "Total (TL)"};
 
         tableModel = new DefaultTableModel(columns, 0) {
@@ -106,40 +106,40 @@ public class HotelSystem extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
 
-        // --- 4. ALT PANEL (RAPOR / FOOTER) ---
+
         JPanel pnlBottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
         pnlBottom.setBorder(new TitledBorder("Instant Report"));
 
-        // Etiketleri oluştur
+
         lblTotalRooms = new JLabel("Total Rooms: 0");
         lblOccupiedRooms = new JLabel("Occupied: 0");
         lblTotalIncome = new JLabel("Current Income: 0.0 TL");
 
-        // Font ayarları
+
         Font fontStats = new Font("Arial", Font.BOLD, 14);
         lblTotalRooms.setFont(fontStats);
         lblOccupiedRooms.setFont(fontStats);
         lblTotalIncome.setFont(fontStats);
         lblTotalIncome.setForeground(new Color(0, 100, 0)); // Gelir yeşil renk
 
-        // Panele ekle
+
         pnlBottom.add(lblTotalRooms);
         pnlBottom.add(lblOccupiedRooms);
         pnlBottom.add(lblTotalIncome);
 
-        // Ana ekrana ekle
+
         add(pnlBottom, BorderLayout.SOUTH);
 
-        // --- BUTON OLAYLARI ---
+
         btnBook.addActionListener(e -> makeReservation());
         btnCheckout.addActionListener(e -> performCheckout());
         btnRefresh.addActionListener(e -> updateTable());
 
-        updateTable(); // İlk açılışta tabloyu ve raporu doldur
+        updateTable();
     }
 
     private void updateTable() {
-        tableModel.setRowCount(0); // Tabloyu temizle
+        tableModel.setRowCount(0);
 
         for (Room r : roomRepo.getAll()) {
             String status = r.isAvailable() ? "VACANT" : "OCCUPIED";
@@ -166,7 +166,7 @@ public class HotelSystem extends JFrame {
             tableModel.addRow(row);
         }
 
-        // Tablo dolduktan sonra raporu güncelle
+
         updateReport();
     }
 
@@ -185,7 +185,6 @@ public class HotelSystem extends JFrame {
             }
         }
 
-        // Etiketleri güncelle
         lblTotalRooms.setText("Total Rooms: " + total);
         lblOccupiedRooms.setText("Occupied: " + occupied);
         lblTotalIncome.setText("Current Income: " + income + " TL");
@@ -217,7 +216,7 @@ public class HotelSystem extends JFrame {
                 txtName.setText("");
                 txtDays.setText("");
 
-                // Tabloyu ve raporu güncelle, veriyi kaydet
+
                 updateTable();
                 Data.saveData(roomRepo.getAll());
 
@@ -247,7 +246,7 @@ public class HotelSystem extends JFrame {
         } else {
             r.checkOut();
 
-            // Tabloyu ve raporu güncelle, veriyi kaydet
+
             updateTable();
             Data.saveData(roomRepo.getAll());
 
