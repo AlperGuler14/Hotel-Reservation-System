@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class HotelSystem extends JFrame {
 
-    private Map<Integer, Room> roomMap;
-    private HotelRepository<Room> roomRepo;
+    private final Map<Integer, Room> roomMap;
+    private final HotelRepository<Room> roomRepo;
 
     private DefaultTableModel tableModel;
     private JTable table;
@@ -120,7 +120,7 @@ public class HotelSystem extends JFrame {
         lblTotalRooms.setFont(fontStats);
         lblOccupiedRooms.setFont(fontStats);
         lblTotalIncome.setFont(fontStats);
-        lblTotalIncome.setForeground(new Color(0, 100, 0)); // Gelir yeşil renk
+        lblTotalIncome.setForeground(new Color(0, 100, 0));
 
 
         pnlBottom.add(lblTotalRooms);
@@ -176,9 +176,9 @@ public class HotelSystem extends JFrame {
         double income = 0.0;
 
         for (Room r : roomRepo.getAll()) {
-            if (!r.isAvailable()) { // Oda doluysa
+            if (!r.isAvailable()) {
                 occupied++;
-                // Gelir hesapla
+
                 if (r.getGuest() != null) {
                     income += r.price * r.getGuest().getDays();
                 }
