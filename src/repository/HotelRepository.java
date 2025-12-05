@@ -1,8 +1,10 @@
+package repository;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class HotelRepository<T> {
-    private List<T> items;
+    private final List<T> items;
 
     public HotelRepository() {
         this.items = new ArrayList<>();

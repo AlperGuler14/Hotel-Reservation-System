@@ -1,3 +1,7 @@
+package model;
+
+import service.IBookable;
+
 public abstract class Room implements IBookable {
     protected int roomNumber;
     protected double price;
@@ -16,6 +20,10 @@ public abstract class Room implements IBookable {
 
     public int getRoomNumber() { return roomNumber; }
     public String getTypeName() { return typeName; }
+
+    public double getPrice() {
+        return price;
+    }
 
     @Override
     public boolean isAvailable() {
@@ -37,7 +45,7 @@ public abstract class Room implements IBookable {
     @Override
     public String toString() {
         String statusStr = isOccupied ? "OCCUPIED (" + guest.getFullName() + ")" : "VACANT";
-        return String.format("Room %d [%s] - Status: %s - Price: %.2f TL",
+        return String.format("model.Room %d [%s] - Status: %s - Price: %.2f TL",
                 roomNumber, typeName, statusStr, price);
     }
 

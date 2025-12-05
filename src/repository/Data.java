@@ -1,3 +1,8 @@
+package repository;
+
+import model.Customer;
+import model.Room;
+
 import java.io.*;
 import java.util.Map;
 

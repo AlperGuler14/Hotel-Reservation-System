@@ -1,6 +1,8 @@
+package model;
+
 public class Customer {
-    private String fullName;
-    private int days;
+    private final String fullName;
+    private final int days;
 
     public Customer(String fullName, int days) {
         this.fullName = fullName;

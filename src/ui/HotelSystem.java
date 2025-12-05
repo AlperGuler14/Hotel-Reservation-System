@@ -1,3 +1,13 @@
+package ui;
+
+import model.KingRoom;
+import model.Room;
+import model.StandardRoom;
+import model.SuiteRoom;
+import model.Customer;
+import repository.Data;
+import repository.HotelRepository;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -66,7 +76,7 @@ public class HotelSystem extends JFrame {
         pnlLeft.setBorder(new TitledBorder("Operations"));
         pnlLeft.setPreferredSize(new Dimension(250, 0));
 
-        pnlLeft.add(new JLabel("Customer Name:"));
+        pnlLeft.add(new JLabel("model.Customer Name:"));
         txtName = new JTextField();
         pnlLeft.add(txtName);
 
@@ -74,12 +84,12 @@ public class HotelSystem extends JFrame {
         txtDays = new JTextField();
         pnlLeft.add(txtDays);
 
-        pnlLeft.add(new JLabel("Room Type:"));
+        pnlLeft.add(new JLabel("model.Room Type:"));
         String[] types = {"All", "Standard", "Suite", "King"};
         cmbType = new JComboBox<>(types);
         pnlLeft.add(cmbType);
 
-        JButton btnBook = new JButton("Book Room");
+        JButton btnBook = new JButton("Book model.Room");
         JButton btnCheckout = new JButton("Checkout Selected");
         JButton btnRefresh = new JButton("Refresh List");
 
@@ -91,7 +101,7 @@ public class HotelSystem extends JFrame {
         add(pnlLeft, BorderLayout.WEST);
 
 
-        String[] columns = {"Room No", "Type", "Status", "Customer", "Days", "Total (TL)"};
+        String[] columns = {"model.Room No", "Type", "Status", "model.Customer", "Days", "Total (TL)"};
 
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -145,13 +155,13 @@ public class HotelSystem extends JFrame {
             String status = r.isAvailable() ? "VACANT" : "OCCUPIED";
             String customerName = "-";
             String days = "-";
-            String price = r.price + " TL (Daily)";
+            String price = r.getPrice() + " TL (Daily)";
 
             if (!r.isAvailable() && r.getGuest() != null) {
                 Customer c = r.getGuest();
                 customerName = c.getFullName();
                 days = String.valueOf(c.getDays());
-                double totalPrice = c.getDays() * r.price;
+                double totalPrice = c.getDays() * r.getPrice();
                 price = totalPrice + " TL";
             }
 
@@ -180,7 +190,7 @@ public class HotelSystem extends JFrame {
                 occupied++;
 
                 if (r.getGuest() != null) {
-                    income += r.price * r.getGuest().getDays();
+                    income += r.getPrice() * r.getGuest().getDays();
                 }
             }
         }
@@ -204,8 +214,11 @@ public class HotelSystem extends JFrame {
             int days = Integer.parseInt(daysStr);
 
             Room availableRoom = roomRepo.getAll().stream()
-                    .filter(r -> selectedType.equals("All") || r.getTypeName().equals(selectedType))
-                    .filter(r -> r.isAvailable())
+                    .filter(r -> {
+                        assert selectedType != null;
+                        return selectedType.equals("All") || r.getTypeName().equals(selectedType);
+                    })
+                    .filter(Room::isAvailable)
                     .findFirst()
                     .orElse(null);
 
@@ -220,7 +233,7 @@ public class HotelSystem extends JFrame {
                 updateTable();
                 Data.saveData(roomRepo.getAll());
 
-                JOptionPane.showMessageDialog(this, "Room booked: " + availableRoom.getRoomNumber());
+                JOptionPane.showMessageDialog(this, "model.Room booked: " + availableRoom.getRoomNumber());
             } else {
                 JOptionPane.showMessageDialog(this, "No empty room found for selected criteria!", "Sorry", JOptionPane.ERROR_MESSAGE);
             }
@@ -253,8 +266,5 @@ public class HotelSystem extends JFrame {
             JOptionPane.showMessageDialog(this, "Checkout successful.");
         }
     }
-
-    public static void main(String[] args) {
-        new HotelSystem().setVisible(true);
-    }
 }
+
